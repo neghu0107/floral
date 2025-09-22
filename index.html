@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floral Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffe4e6;
+            color: #333;
+        }
+        .sidebar {
+            background-color: #fce7f3;
+            width: 280px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem 1rem;
+        }
+        .logo {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #d11270;
+            margin-bottom: 0.5rem;
+        }
+        .slogan {
+            font-size: 0.875rem;
+            color: #ec4899;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .nav-button {
+            background-color: #d11270;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.25rem;
+            cursor: pointer;
+        }
+        .nav-button:hover {
+            background-color: #b10e60;
+            transform: translateY(-2px);
+        }
+        .nav-button.active {
+            background-color: #fbcfe8;
+            color: #d11270;
+        }
+        .circular-logo {
+            background-color: #fbcfe8;
+            width: 100px;
+            height: 100px;
+            border-radius: 9999px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #d11270;
+            font-weight: 600;
+            margin-top: 2rem;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 2.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+        }
+        .card-header {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #d11270;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #fbcfe8;
+            border-radius: 0.5rem;
+            transition: border-color 0.2s ease-in-out;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #d11270;
+        }
+        .action-button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #d11270;
+            color: white;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease-in-out;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .action-button:hover {
+            background-color: #b10e60;
+        }
+        .error-message {
+            color: #e53e3e;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .modal-button {
+            margin-top: 1.5rem;
+            padding: 0.75rem 2rem;
+            background-color: #d11270;
+            color: white;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">Floral Haven</div>
+        <div class="slogan">Your professional floral solution.</div>
+        <button id="login-btn" class="nav-button active">Login</button>
+        <button id="create-order-btn" class="nav-button" style="display: none;">Create Order</button>
+        <button id="customer-details-btn" class="nav-button" style="display: none;">Customer Details</button>
+        <button id="order-summary-btn" class="nav-button" style="display: none;">Order Summary</button>
+        <div class="circular-logo">
+            Professional Floral
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div id="login-card" class="card">
+            <div class="card-header">Login</div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="admin">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="password">
+            </div>
+            <button class="action-button" id="login-submit-btn">Login</button>
+            <div id="login-error" class="error-message" style="display: none;"></div>
+        </div>
+
+        <div id="create-order-card" class="card" style="display: none;">
+            <div class="card-header">Create New Order</div>
+            <div class="form-group">
+                <label for="flower-name">Flower Name</label>
+                <select id="flower-name">
+                    <!-- Flowers will be populated here by JavaScript -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" value="1" min="1">
+            </div>
+            <button class="action-button" id="add-order-btn">Add Order</button>
+        </div>
+
+        <div id="customer-details-card" class="card" style="display: none;">
+            <div class="card-header">Customer Details</div>
+            <div class="form-group">
+                <label for="customer-name">Name</label>
+                <input type="text" id="customer-name" required>
+            </div>
+            <div class="form-group">
+                <label for="customer-phone">Phone Number</label>
+                <input type="text" id="customer-phone" required>
+            </div>
+            <div class="form-group">
+                <label for="customer-email">Email</label>
+                <input type="email" id="customer-email" required>
+            </div>
+            <div class="form-group">
+                <label for="customer-address">Address</label>
+                <input type="text" id="customer-address" required>
+            </div>
+            <button class="action-button" id="save-customer-btn">Save Details</button>
+        </div>
+
+        <div id="order-summary-card" class="card" style="display: none;">
+            <div class="card-header">Order Summary</div>
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <h3 class="text-lg font-semibold text-pink-600 mb-2">Customer Information</h3>
+                <div class="text-sm">
+                    <div class="summary-item"><span class="font-bold">Name:</span> <span id="summary-name"></span></div>
+                    <div class="summary-item"><span class="font-bold">Phone:</span> <span id="summary-phone"></span></div>
+                    <div class="summary-item"><span class="font-bold">Email:</span> <span id="summary-email"></span></div>
+                    <div class="summary-item"><span class="font-bold">Address:</span> <span id="summary-address"></span></div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-6">
+                <h3 class="text-lg font-semibold text-pink-600 mb-2">Order Information</h3>
+                <div class="text-sm">
+                    <div class="summary-item"><span class="font-bold">Product:</span> <span id="summary-product"></span></div>
+                    <div class="summary-item"><span class="font-bold">Quantity:</span> <span id="summary-quantity"></span></div>
+                    <div class="summary-item"><span class="font-bold">Total Amount:</span> <span id="summary-total"></span></div>
+                    <div class="summary-item"><span class="font-bold">Delivery Date:</span> <span id="summary-date"></span></div>
+                </div>
+            </div>
+
+            <button class="action-button" id="finalize-order-btn">Finalize Order</button>
+        </div>
+    </main>
+
+    <!-- Modal for messages -->
+    <div id="message-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <p id="modal-text"></p>
+            <button id="modal-ok-btn" class="modal-button">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginBtn = document.getElementById('login-btn');
+            const createOrderBtn = document.getElementById('create-order-btn');
+            const customerDetailsBtn = document.getElementById('customer-details-btn');
+            const orderSummaryBtn = document.getElementById('order-summary-btn');
+            const loginCard = document.getElementById('login-card');
+            const createOrderCard = document.getElementById('create-order-card');
+            const customerDetailsCard = document.getElementById('customer-details-card');
+            const orderSummaryCard = document.getElementById('order-summary-card');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginSubmitBtn = document.getElementById('login-submit-btn');
+            const loginError = document.getElementById('login-error');
+            const flowerNameSelect = document.getElementById('flower-name');
+            const quantityInput = document.getElementById('quantity');
+            const addOrderBtn = document.getElementById('add-order-btn');
+            const customerNameInput = document.getElementById('customer-name');
+            const customerPhoneInput = document.getElementById('customer-phone');
+            const customerEmailInput = document.getElementById('customer-email');
+            const customerAddressInput = document.getElementById('customer-address');
+            const saveCustomerBtn = document.getElementById('save-customer-btn');
+            const finalizeOrderBtn = document.getElementById('finalize-order-btn');
+            const messageModal = document.getElementById('message-modal');
+            const modalText = document.getElementById('modal-text');
+            const modalOkBtn = document.getElementById('modal-ok-btn');
+
+            let products = [];
+            let orderData = {};
+            let customerData = {};
+
+            function showView(viewName) {
+                loginCard.style.display = 'none';
+                createOrderCard.style.display = 'none';
+                customerDetailsCard.style.display = 'none';
+                orderSummaryCard.style.display = 'none';
+                loginBtn.classList.remove('active');
+                createOrderBtn.classList.remove('active');
+                customerDetailsBtn.classList.remove('active');
+                orderSummaryBtn.classList.remove('active');
+
+                if (viewName === 'login') {
+                    loginCard.style.display = 'block';
+                    loginBtn.classList.add('active');
+                } else if (viewName === 'create-order') {
+                    createOrderCard.style.display = 'block';
+                    createOrderBtn.classList.add('active');
+                    if (products.length === 0) {
+                        fetchProducts();
+                    }
+                } else if (viewName === 'customer-details') {
+                    customerDetailsCard.style.display = 'block';
+                    customerDetailsBtn.classList.add('active');
+                } else if (viewName === 'order-summary') {
+                    orderSummaryCard.style.display = 'block';
+                    orderSummaryBtn.classList.add('active');
+                    updateOrderSummary();
+                }
+            }
+
+            function showModal(message) {
+                modalText.textContent = message;
+                messageModal.style.display = 'flex';
+            }
+
+            modalOkBtn.addEventListener('click', () => {
+                messageModal.style.display = 'none';
+            });
+
+            loginBtn.addEventListener('click', () => showView('login'));
+            createOrderBtn.addEventListener('click', () => showView('create-order'));
+            customerDetailsBtn.addEventListener('click', () => showView('customer-details'));
+            orderSummaryBtn.addEventListener('click', () => showView('order-summary'));
+
+            loginSubmitBtn.addEventListener('click', async () => {
+                const username = usernameInput.value;
+                const password = passwordInput.value;
+                loginError.style.display = 'none';
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        showModal('Login successful!');
+                        loginBtn.style.display = 'none';
+                        createOrderBtn.style.display = 'block';
+                        customerDetailsBtn.style.display = 'block';
+                        orderSummaryBtn.style.display = 'block';
+                        showView('create-order');
+                    } else {
+                        loginError.textContent = data.message;
+                        loginError.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    loginError.textContent = 'Failed to connect to server.';
+                    loginError.style.display = 'block';
+                }
+            });
+
+            async function fetchProducts() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/products');
+                    if (!response.ok) {
+                        showModal('Failed to load products. Please ensure the Node.js server is running and the database is configured correctly.');
+                        return;
+                    }
+                    const data = await response.json();
+                    if (data.success && data.products) {
+                        products = data.products;
+                        populateDropdown(products);
+                    } else {
+                        showModal('No products found.');
+                    }
+                } catch (error) {
+                    console.error('Fetch products error:', error);
+                    showModal('Failed to connect to server. Please ensure the Node.js server is running.');
+                }
+            }
+
+            function populateDropdown(products) {
+                flowerNameSelect.innerHTML = '';
+                products.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.flower_id;
+                    option.textContent = product.flower_name;
+                    flowerNameSelect.appendChild(option);
+                });
+            }
+
+            addOrderBtn.addEventListener('click', () => {
+                const selectedFlowerId = flowerNameSelect.value;
+                const selectedFlower = products.find(p => p.flower_id === selectedFlowerId);
+                const quantity = parseInt(quantityInput.value, 10);
+
+                if (!selectedFlowerId) {
+                    showModal('Please select a flower.');
+                    return;
+                }
+                if (isNaN(quantity) || quantity <= 0) {
+                    showModal('Please enter a valid quantity.');
+                    return;
+                }
+
+                orderData = {
+                    flowerId: selectedFlowerId,
+                    quantity: quantity,
+                    deliveryDate: new Date().toISOString().slice(0, 10) // YYYY-MM-DD format
+                };
+
+                showModal('Order details saved. Please enter customer details.');
+                showView('customer-details');
+            });
+
+            saveCustomerBtn.addEventListener('click', () => {
+                const name = customerNameInput.value.trim();
+                const phone = customerPhoneInput.value.trim();
+                const email = customerEmailInput.value.trim();
+                const address = customerAddressInput.value.trim();
+
+                if (!name || !phone || !email || !address) {
+                    showModal('Please fill in all customer details.');
+                    return;
+                }
+
+                customerData = {
+                    name,
+                    phone,
+                    email,
+                    address
+                };
+
+                showModal('Customer details saved. Review your order summary.');
+                showView('order-summary');
+            });
+
+            function updateOrderSummary() {
+                const selectedFlower = products.find(p => p.flower_id === orderData.flowerId);
+                const unitPrice = selectedFlower ? parseFloat(selectedFlower.price) : 0;
+                const totalAmount = unitPrice * orderData.quantity;
+
+                document.getElementById('summary-name').textContent = customerData.name;
+                document.getElementById('summary-phone').textContent = customerData.phone;
+                document.getElementById('summary-email').textContent = customerData.email;
+                document.getElementById('summary-address').textContent = customerData.address;
+                document.getElementById('summary-product').textContent = selectedFlower ? selectedFlower.flower_name : 'N/A';
+                document.getElementById('summary-quantity').textContent = orderData.quantity;
+                document.getElementById('summary-total').textContent = `$${totalAmount.toFixed(2)}`;
+                document.getElementById('summary-date').textContent = orderData.deliveryDate;
+            }
+
+            finalizeOrderBtn.addEventListener('click', async () => {
+                if (Object.keys(orderData).length === 0 || Object.keys(customerData).length === 0) {
+                    showModal('Please complete the order and customer details first.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/save-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ customer: customerData, order: orderData })
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        showModal('Order placed successfully!');
+                        // Reset forms and return to the create order page
+                        customerNameInput.value = '';
+                        customerPhoneInput.value = '';
+                        customerEmailInput.value = '';
+                        customerAddressInput.value = '';
+                        quantityInput.value = 1;
+                        showView('create-order');
+                    } else {
+                        showModal('Failed to place order: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Finalize order error:', error);
+                    showModal('Failed to connect to the server. Please try again.');
+                }
+            });
+
+            // Initial view
+            showView('login');
+        });
+    </script>
+</body>
+</html>
